@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import { ThemeProvider } from "@/components/theme-provider";
 import {
   ClerkProvider,
   SignInButton,
@@ -15,6 +16,8 @@ const fontSans = FontSans({
   variable: "--font-sans",
 })
 import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { ModeToggle } from "@/components/ui/themeToggleBtn";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -36,16 +39,25 @@ export default function RootLayout({
             inter.className
           )}
         >
-          <div className="w-screen flex justify-end p-4 absolute top-0 right-0">
-            <SignedOut>
-              
-              <SignInButton />
-            </SignedOut>
-            <SignedIn>
-              <UserButton />
-            </SignedIn>
-          </div>
-          {children}
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <div className="w-screen flex justify-end p-4 absolute top-0 right-0 gap-4">
+              <ModeToggle/>
+              <SignedOut>
+                <Button variant="outline">
+                  <SignInButton />
+                </Button>
+              </SignedOut>
+              <SignedIn>
+                <UserButton />
+              </SignedIn>
+            </div>
+            {children}
+          </ThemeProvider>
         </body>
       </html>
     </ClerkProvider>
