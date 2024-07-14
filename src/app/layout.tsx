@@ -45,7 +45,7 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            <div className="w-screen flex justify-end p-4 absolute top-0 right-0 gap-4">
+            <div className="w-screen flex justify-end p-4 absolute top-0 right-0 gap-2">
               <ModeToggle/>
               <SignedOut>
                 <Button variant="outline">
