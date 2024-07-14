@@ -31,7 +31,7 @@ export default function Home() {
     <div className="h-screen w-screen p-8 dark:bg-gray-900">
       <h1 className="text-2xl font-bold mb-4">Real-Time Ping Notification System</h1>
       <p className="mb-4">Connection status: {isConnected ? 'Connected' : 'Disconnected'}</p>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 overflow-y-auto md:grid-cols-2 lg:grid-cols-3 gap-4">
         {connectedUsers.filter(connectedUser => connectedUser.userName !== user.username).map((connectedUser) => (
           <Card key={connectedUser.id}>
             <CardHeader>

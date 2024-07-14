@@ -27,7 +27,7 @@ const SocketHandler = (req: NextApiRequest, res: NextApiResponseWithSocket) => {
     res.socket.server.io = io;
 
     io.on('connection', socket => {
-      console.log('A user connected:', socket.id);
+     console.log('A user connected:', socket.id);
 
       socket.on('setUsername', (userName: string) => {
         users.set(socket.id, userName);
