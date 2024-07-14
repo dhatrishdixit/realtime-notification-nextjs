@@ -32,6 +32,9 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en" suppressHydrationWarning>
+        <head>
+          <title>notification-system</title>
+        </head>
         <body 
           className={cn(
             "w-screen h-screen bg-background font-sans antialiased overflow-hidden",
