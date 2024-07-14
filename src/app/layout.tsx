@@ -1,8 +1,20 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-
+import {
+  ClerkProvider,
+  SignInButton,
+  SignedIn,
+  SignedOut,
+  UserButton
+} from '@clerk/nextjs'
 const inter = Inter({ subsets: ["latin"] });
+import { Inter as FontSans } from "next/font/google";
+const fontSans = FontSans({
+  subsets: ["latin"],
+  variable: "--font-sans",
+})
+import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -15,8 +27,27 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={inter.className}>{children}</body>
-    </html>
+    <ClerkProvider>
+      <html lang="en" suppressHydrationWarning>
+        <body 
+          className={cn(
+            "w-screen h-screen bg-background font-sans antialiased overflow-hidden",
+            fontSans.variable,
+            inter.className
+          )}
+        >
+          <div className="w-screen flex justify-end p-4 absolute top-0 right-0">
+            <SignedOut>
+              
+              <SignInButton />
+            </SignedOut>
+            <SignedIn>
+              <UserButton />
+            </SignedIn>
+          </div>
+          {children}
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }
