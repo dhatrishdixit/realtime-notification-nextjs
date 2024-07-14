@@ -8,7 +8,8 @@ import {
   SignedIn,
   SignedOut,
   UserButton
-} from '@clerk/nextjs'
+} from '@clerk/nextjs';
+import { Toaster } from "@/components/ui/sonner";
 const inter = Inter({ subsets: ["latin"] });
 import { Inter as FontSans } from "next/font/google";
 const fontSans = FontSans({
@@ -60,6 +61,7 @@ export default function RootLayout({
               </SignedIn>
             </div>
             {children}
+            <Toaster />
           </ThemeProvider>
         </body>
       </html>
