@@ -21,7 +21,7 @@ export default function Home() {
     if (notifications.length > 0) {
       toast(notifications[notifications.length - 1]);
     }
-  }, [notifications]);
+  }, [notifications,socket]);
 
   if (!isLoaded || !isSignedIn) {
     return <div>Please sign in to use the chat.</div>;

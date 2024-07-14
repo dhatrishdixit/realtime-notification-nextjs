@@ -27,14 +27,24 @@ const SocketHandler = (req: NextApiRequest, res: NextApiResponseWithSocket) => {
     res.socket.server.io = io;
 
     io.on('connection', socket => {
-     console.log('A user connected:', socket.id);
+      console.log('A user connected:', socket.id);
+
+      const existingUser = Array.from(users.entries()).find(([_, name]) => name === socket.handshake.query.userName);
+      if (existingUser) {
+        users.delete(existingUser[0]);
+        users.set(socket.id, existingUser[1]);
+        io.emit('userReconnected', { oldId: existingUser[0], newId: socket.id, userName: existingUser[1] });
+      }
 
       socket.on('setUsername', (userName: string) => {
+        if (Array.from(users.values()).includes(userName)) {
+          socket.emit('usernameTaken');
+          return;
+        }
         users.set(socket.id, userName);
         io.emit('userJoined', { id: socket.id, userName });
         console.log(`User ${userName} joined with ID ${socket.id}`);
 
-        // Send the updated user list to all clients
         const userList = Array.from(users.entries()).map(([id, name]) => ({ id, userName: name }));
         io.emit('updateUserList', userList);
       });
@@ -46,7 +56,6 @@ const SocketHandler = (req: NextApiRequest, res: NextApiResponseWithSocket) => {
           io.emit('userLeft', { id: socket.id, userName });
           users.delete(socket.id);
 
-          // Send the updated user list to all clients
           const userList = Array.from(users.entries()).map(([id, name]) => ({ id, userName: name }));
           io.emit('updateUserList', userList);
         }
@@ -60,7 +69,6 @@ const SocketHandler = (req: NextApiRequest, res: NextApiResponseWithSocket) => {
         }
       });
 
-      // Send the current user list to the newly connected client
       const userList = Array.from(users.entries()).map(([id, name]) => ({ id, userName: name }));
       socket.emit('updateUserList', userList);
     });
